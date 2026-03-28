@@ -26,3 +26,23 @@ def mp_bounds(n_assets: int, n_obs: int) -> tuple[float, float]:
     upper_bound = (1 + np.sqrt(q)) ** 2
 
     return lower_bound, upper_bound
+
+def mp_pdf(x: np.ndarray, n_assets: int, n_obs: int, sigma2: float = 1.0) -> np.ndarray:
+    """
+    Marchenko–Pastur probability density function.
+    """
+    x = np.asarray(x)
+
+    q = n_assets / n_obs
+    lambda_min = sigma2 * (1 - np.sqrt(q)) ** 2
+    lambda_max = sigma2 * (1 + np.sqrt(q)) ** 2
+
+    density = np.zeros_like(x)
+
+    mask = (x >= lambda_min) & (x <= lambda_max)
+    density[mask] = (
+        np.sqrt((lambda_max - x[mask]) * (x[mask] - lambda_min))
+        / (2 * np.pi * sigma2 * q * x[mask])
+    )
+
+    return density
