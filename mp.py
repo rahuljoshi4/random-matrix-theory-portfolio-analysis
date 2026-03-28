@@ -25,4 +25,4 @@ def mp_bounds(n_assets: int, n_obs: int) -> tuple[float, float]:
     lower_bound = (1 - np.sqrt(q)) ** 2
     upper_bound = (1 + np.sqrt(q)) ** 2
 
-    return [lower_bound, upper_bound]
+    return lower_bound, upper_bound
